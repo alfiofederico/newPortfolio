@@ -107,6 +107,13 @@ ul {
   border-radius: 7px 7px 0 0;
 }
 
+.footer {
+  background-color: var(--mainColor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 #navigation {
   margin: 0;
