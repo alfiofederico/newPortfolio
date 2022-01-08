@@ -37,3 +37,35 @@ function setTheme(mode) {
 
   localStorage.setItem("theme", mode);
 }
+
+
+
+const navbar = document.getElementById("navigation");
+let scrolled = false;
+
+window.onscroll = function () {
+ 
+    if (!scrolled) {
+      navigation.style.transform = "translateY(-10px)";
+    }
+    setTimeout(function () {
+      navbar.style.transform = "translateY(0)";
+      scrolled = true;
+    }, 10);
+  } 
+;
+
+$("#navigation a").on("click", function (e) {
+  if (this.hash !== "") {
+    e.preventDefault();
+
+    const hash = this.hash;
+
+    $("html, body").animate(
+      {
+        scrollTop: $(hash).offset().top - 100,
+      },
+      400
+    );
+  }
+});
