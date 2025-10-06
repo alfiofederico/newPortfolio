@@ -219,25 +219,110 @@
     </div>
   </section>
 
-  <section class="s2" id="contact">
-    <div class="main-container">
-      <h3 style="text-align:center">Contact me:</h3>
+<section class="s2" id="contact">
+  <div class="main-container">
+    <h3 style="text-align:center">Contact me:</h3>
 
-      <form id="contact-form" action="/success.html" name="contact" method="POST" data-netlify="true">
+    <form
+      id="contact-form"
+      name="contact"
+      method="POST"
+      action="/success.html"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+    >
+      <!-- Netlify needs these -->
+      <input type="hidden" name="form-name" value="contact" />
+      <p style="display:none;">
+        <label>Don't fill this out: <input name="bot-field" /></label>
+      </p>
 
-          				<i class="fas fa-user"></i> <label>Name</label>
-          				<input class="input-field" type="text" name="name">
+      <label for="name"><i class="fas fa-user"></i> Name</label>
+      <input
+        class="input-field"
+        id="name"
+        name="name"
+        type="text"
+        required
+        minlength="2"
+        autocomplete="name"
+      />
 
-          				<i class="fas fa-envelope"></i> <label>Email</label>
-          				<input class="input-field" type="email" name="email">
+      <label for="email"><i class="fas fa-envelope"></i> Email</label>
+      <input
+        class="input-field"
+        id="email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+      />
 
-          				<i class="fas fa-pencil-alt"></i> <label>Message</label>
-          				<textarea class="input-field" name="message"></textarea>
+      <label for="message"><i class="fas fa-pencil-alt"></i> Message</label>
+      <textarea
+        class="input-field"
+        id="message"
+        name="message"
+        required
+        minlength="10"
+        rows="5"
+      ></textarea>
 
-        <input type="submit"  value="Send!" id="submit-btn">
-      </form>
-    </div>
-  </section>
+      <!-- Optional: enable reCAPTCHA v2 in your Netlify dashboard first, then uncomment -->
+      <!-- <div data-netlify-recaptcha="true"></div> -->
+
+      <input type="submit" value="Send!" id="submit-btn" />
+      <div id="form-errors" aria-live="polite" style="margin-top:.5rem;"></div>
+    </form>
+  </div>
+</section>
+
+<script>
+(function () {
+  const form = document.getElementById('contact-form');
+  const nameEl = document.getElementById('name');
+  const emailEl = document.getElementById('email');
+  const messageEl = document.getElementById('message');
+  const errorsEl = document.getElementById('form-errors');
+
+  function hasNonWhitespace(val) { return /\S/.test(val); }
+
+  form.addEventListener('submit', function (e) {
+    // Trim values before validation so "   " becomes ""
+    [nameEl, emailEl, messageEl].forEach(el => el.value = el.value.trim());
+
+    // Clear previous custom messages
+    [nameEl, emailEl, messageEl].forEach(el => el.setCustomValidity(''));
+    errorsEl.textContent = '';
+
+    let firstInvalid = null;
+
+    if (!hasNonWhitespace(nameEl.value)) {
+      nameEl.setCustomValidity('Please enter your name.');
+      firstInvalid = firstInvalid || nameEl;
+    }
+    if (!emailEl.validity.valid) {
+      emailEl.setCustomValidity('Please enter a valid email address.');
+      firstInvalid = firstInvalid || emailEl;
+    }
+    if (!hasNonWhitespace(messageEl.value) || messageEl.value.length < 10) {
+      messageEl.setCustomValidity('Please write at least 10 characters.');
+      firstInvalid = firstInvalid || messageEl;
+    }
+
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      errorsEl.textContent = 'Please fix the highlighted fields.';
+      if (firstInvalid) firstInvalid.reportValidity();
+    }
+  });
+})();
+</script>
+
+<noscript>
+  <p style="color:#c00">JavaScript is required to validate this form.</p>
+</noscript>
+
 
   <footer>
             <div class="footer">
